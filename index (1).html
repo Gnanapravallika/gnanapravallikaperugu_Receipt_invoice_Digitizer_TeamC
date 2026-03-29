@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Digitizer</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; }
+        h1 { color: #333; text-align: center; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .upload-section { text-align: center; margin-bottom: 20px; border: 2px dashed #ddd; padding: 40px; border-radius: 8px; }
+        input[type="file"] { margin: 10px 0; }
+        button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #45a049; }
+        .results { margin-top: 20px; }
+        .data-card { background: #f9f9f9; padding: 15px; border-left: 5px solid #2196F3; margin-bottom: 10px; }
+        .raw-text { white-space: pre-wrap; background: #eee; padding: 10px; max-height: 200px; overflow-y: auto; font-family: monospace; }
+        .download-btn { display: inline-block; background-color: #008CBA; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px; }
+        .download-btn:hover { background-color: #007bb5; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📄 Receipt & Invoice Digitizer</h1>
+    
+    <div class="upload-section">
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".png, .jpg, .jpeg, .pdf" required>
+            <br><br>
+            <button type="submit">Upload & Digitize</button>
+        </form>
+    </div>
+
+    {% if csv_file %}
+    <div class="results">
+        <h2>✅ Extraction Complete</h2>
+        
+        <div class="data-card">
+            <h3>Extracted Data</h3>
+            <p><strong>Vendor:</strong> {{ data['Vendor'] }}</p>
+            <p><strong>Date:</strong> {{ data['Date'] }}</p>
+            <p><strong>Total:</strong> {{ data['Total'] }}</p>
+        </div>
+
+        <a href="{{ url_for('download_file', filename=csv_file) }}" class="download-btn">⬇ Download CSV</a>
+
+        <h3>Raw Text (Debug)</h3>
+        <div class="raw-text">{{ data['Raw_Text'] }}</div>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
